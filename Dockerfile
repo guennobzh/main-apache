@@ -21,8 +21,12 @@ RUN a2enmod rewrite
 RUN a2enmod expires
 RUN a2enmod headers
 RUN a2enmod cgi
+RUN a2enmod remoteip
 
 ADD 000-default.conf /etc/apache2/sites-enabled
+
+RUN cp /etc/apache2/apache2.conf /etc/apache2/apache2.conf.bak
+RUN sed 's/LogFormat "%h %l %u %t \\"%r\\" %>s %O \\"%{Referer}i\\" \\"%{User-Agent}i\\"" combined/LogFormat "%a %l %u %t \\"%r\\" %>s %b \\"%{Referer}i\\" \\"%{User-Agent}i\\"" combined/g' /etc/apache2/apache2.conf.bak > /etc/apache2/apache2.conf
 
 EXPOSE 80
 
